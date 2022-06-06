@@ -99,10 +99,29 @@ sys_share_mem(void)
 	if (argstr(0, &name) < 0 || argint(2, &size) < 0 || argptr(1, &addr, size) < 0)
 		return -1;
 
-	begin_op();
-	
-	cprintf("%s %d %d\n", name, addr, size);
+	if (!addr)
+		return -1;
 
-	end_op();
+	struct proc *curproc = myproc();
+
+	struct shared *shr = 0;
+	for (int i = 0; i < SHRD_SIZ; ++i) {
+		if (!strncmp(name, curproc->shr[i].name, SHRD_NAME_SIZ)) {
+			return -2;
+		}
+
+		if (curproc->shr[i].size == 0) {
+			shr = &curproc->shr[i];
+			break;
+		}
+	}
+
+	if (!shr)
+		return -3;
+
+	memmove(shr, addr, size);
+	
+	cprintf("%s %d %d\n", shr->name, shr->mem, shr->size);
+
 	return 0;
 }

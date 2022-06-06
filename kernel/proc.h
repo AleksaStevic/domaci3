@@ -38,7 +38,7 @@ enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 struct shared {
 	char name[SHRD_NAME_SIZ];
-	void *addr;
+	char *mem;
 	uint size;
 };
 
