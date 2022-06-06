@@ -199,6 +199,7 @@ fork(void)
 	np->sz = curproc->sz;
 	np->parent = curproc;
 	*np->tf = *curproc->tf;
+	np->ppgdir = curproc->pgdir;
 
 	// Clear %eax so that fork returns 0 in the child.
 	np->tf->eax = 0;
@@ -207,6 +208,8 @@ fork(void)
 		if(curproc->ofile[i])
 			np->ofile[i] = filedup(curproc->ofile[i]);
 	np->cwd = idup(curproc->cwd);
+
+	memmove(np->shr, curproc->shr, SHRD_SIZ);
 
 	safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 

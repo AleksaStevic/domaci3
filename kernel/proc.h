@@ -46,6 +46,7 @@ struct shared {
 struct proc {
 	uint sz;                     // Size of process memory (bytes)
 	pde_t* pgdir;                // Page table
+	pde_t* ppgdir;               // Page table of parent process
 	char *kstack;                // Bottom of kernel stack for this process
 	enum procstate state;        // Process state
 	int pid;                     // Process ID
@@ -57,7 +58,7 @@ struct proc {
 	struct file *ofile[NOFILE];  // Open files
 	struct inode *cwd;           // Current directory
 	char name[16];               // Process name (debugging)
-	struct shared shr[SHRD_SIZ];
+	struct shared shr[SHRD_SIZ]; // Shared memory objects
 };
 
 // Process memory is laid out contiguously, low addresses first:
