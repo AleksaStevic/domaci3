@@ -55,3 +55,9 @@ struct proc {
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+
+struct shared {
+	char name[20];
+	void *addr;
+	uint size;
+};
