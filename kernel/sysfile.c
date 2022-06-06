@@ -441,3 +441,16 @@ sys_pipe(void)
 	fd[1] = fd1;
 	return 0;
 }
+
+int
+sys_share_mem(void)
+{
+	char *name;
+	char *addr;
+	int size;
+	if (argstr(0, &name) < 0 || argint(2, &size) < 0 || argptr(1, &addr, size) < 0)
+		return -1;
+	
+	cprintf("%s %d %d\n", name, addr, size);
+	return 0;
+}

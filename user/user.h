@@ -23,6 +23,7 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int share_mem(char *name, void *addr, int size);
 
 // ulib.c
 int stat(const char*, struct stat*);
