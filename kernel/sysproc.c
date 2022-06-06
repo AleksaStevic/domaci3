@@ -89,3 +89,20 @@ sys_uptime(void)
 	release(&tickslock);
 	return xticks;
 }
+
+int
+sys_share_mem(void)
+{
+	char *name;
+	char *addr;
+	int size;
+	if (argstr(0, &name) < 0 || argint(2, &size) < 0 || argptr(1, &addr, size) < 0)
+		return -1;
+
+	begin_op();
+	
+	cprintf("%s %d %d\n", name, addr, size);
+
+	end_op();
+	return 0;
+}
