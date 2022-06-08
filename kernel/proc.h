@@ -38,8 +38,8 @@ enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 struct shared {
 	char name[SHRD_NAME_SIZ];
-	char *mem;
-	uint size;
+	void *mem;
+	int size;
 };
 
 // Per-process state

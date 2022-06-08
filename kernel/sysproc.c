@@ -94,7 +94,7 @@ int
 sys_share_mem(void)
 {
 	char *name;
-	char *addr;
+	void *addr;
 	int size;
 	if (argstr(0, &name) < 0 || argint(2, &size) < 0 || argptr(1, &addr, size) < 0)
 		return -1;
@@ -119,9 +119,11 @@ sys_share_mem(void)
 	if (!shr)
 		return -3;
 
-	memmove(shr, addr, size);
+	shr->mem = addr;
+	strncpy(shr->name, name, SHRD_NAME_SIZ);
+	shr->size = size;
 	
-	cprintf("%s %d %d\n", shr->name, shr->mem, shr->size);
+	cprintf("%s %s %d\n", shr->name, (char *)shr->mem, shr->size);
 
-	return 0;
+	return 0; // @TODO: vrati redni broj strukture
 }
