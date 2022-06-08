@@ -104,26 +104,30 @@ sys_share_mem(void)
 
 	struct proc *curproc = myproc();
 
-	struct shared *shr = 0;
 	for (int i = 0; i < SHRD_SIZ; ++i) {
 		if (!strncmp(name, curproc->shr[i].name, SHRD_NAME_SIZ)) {
 			return -2;
 		}
+	}
 
+	int index = -1;
+	for (int i = 0; i < SHRD_SIZ; ++i) {
 		if (curproc->shr[i].size == 0) {
-			shr = &curproc->shr[i];
+			index = i;
 			break;
 		}
 	}
 
-	if (!shr)
+	if (index < 0)
 		return -3;
 
+	struct shared *shr = &curproc->shr[index];
 	shr->mem = addr;
 	strncpy(shr->name, name, SHRD_NAME_SIZ);
 	shr->size = size;
 	
+	// @TODO Ne treba ovo:
 	cprintf("%s %s %d\n", shr->name, (char *)shr->mem, shr->size);
 
-	return 0; // @TODO: vrati redni broj strukture
+	return index;
 }

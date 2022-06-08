@@ -209,7 +209,7 @@ fork(void)
 			np->ofile[i] = filedup(curproc->ofile[i]);
 	np->cwd = idup(curproc->cwd);
 
-	memmove(np->shr, curproc->shr, SHRD_SIZ);
+	memmove(np->shr, curproc->shr, sizeof(np->shr));
 
 	safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
